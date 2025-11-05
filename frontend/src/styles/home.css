@@ -1,0 +1,30 @@
+.hero {
+    height: 70vh; /* take 70% of screen height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background-image: url("/images/hero.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .hero-content {
+    background-color: rgba(0, 0, 0, 0.5); /* dark overlay */
+    padding: 2rem;
+    border-radius: 10px;
+  }
+  
+  .hero-btn {
+    margin-top: 1rem;
+    padding: 10px 20px;
+    background-color: goldenrod;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  
