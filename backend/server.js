@@ -9,11 +9,10 @@ import menuRoutes from "./routes/menuRoutes.js";
 
 dotenv.config();
 
-const app = express();
-
+const cors = require("cors");
 app.use(cors({
   origin:
-  ["https://silver-spoonn-rdt52sd9x-unorthodoxs-projects.vercel.app"],
+  ["*"],
   methods: ["GET", "POST"],
   credentials: true
 }));
