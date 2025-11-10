@@ -3,34 +3,20 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path"
+import { fileURLToPath } from "url";
 
 import reservationRoutes from "./routes/reservationRoutes.js";
 import menuRoutes from "./routes/menuRoutes.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 dotenv.config();
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",     
-  /\.vercel\.app$/,            
-];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // allow Postman or server-to-server
-    if (allowedOrigins.some(o => {
-      if (o instanceof RegExp) return o.test(origin);
-      return o === origin;
-    })) {
-      return callback(null, true);
-    } else {
-      console.log("❌ Blocked by CORS:", origin);
-      return callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.use(express.json());
 
 // Routes
@@ -38,10 +24,9 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/menu", menuRoutes);
 
 // Root route
-app.get("/", (req, res) => {
-  res.send("Server is running and MongoDB is connected!");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
-
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
