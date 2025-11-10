@@ -10,9 +10,25 @@ import menuRoutes from "./routes/menuRoutes.js";
 dotenv.config();
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",     
+  /\.vercel\.app$/,            
+];
+
 app.use(cors({
-  origin: ["https://portfolio-9m68a3gfw-unorthodoxs-projects.vercel.app"],
-  methods: ["GET", "POST"],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // allow Postman or server-to-server
+    if (allowedOrigins.some(o => {
+      if (o instanceof RegExp) return o.test(origin);
+      return o === origin;
+    })) {
+      return callback(null, true);
+    } else {
+      console.log("❌ Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 app.use(express.json());
